@@ -1,0 +1,28 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ---- Virtual Environments ----
+venv/
+ENV/
+env/
+.venv/
+
+# ---- PyCharm / JetBrains IDE ----
+.idea/
+*.iml
+
+# ---- OS-specific ----
+.DS_Store        # macOS
+Thumbs.db        # Windows
+
+# ---- Logs ----
+*.log
