@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Wildlife Protector Tracker</title>
+</head>
+<body>
+  <h1>Wildlife Protector Tracker</h1>
+
+  <!-- 🟢 Dropdown + date picker form -->
+  <form id="actionForm">
+    <!-- Dropdown (select action type) -->
+    <label>Action:
+      <select id="actionType">
+        <option>Recycle</option>
+        <option>Bike</option>
+        <option>Save Water</option>
+      </select>
+    </label>
+
+    <!-- Date picker -->
+    <label>Date:
+      <input type="date" id="actionDate" />
+    </label>
+
+    <!-- Button -->
+    <button type="submit">Log Action</button>
+  </form>
+
+  <!-- 🟢 List of logged actions -->
+  <h2>Logged Actions</h2>
+  <ul id="actionsList"></ul>
+
+  <!-- 🟢 JavaScript to talk to Flask -->
+  <script>
+    // Get actions from backend
+    async function fetchActions() {
+      const res = await fetch('/api/actions');
+      const actions = await res.json();
+      renderActions(actions);
+    }
+
+    // Show actions in the <ul>
+    function renderActions(actions) {
+      const list = document.getElementById('actionsList');
+      list.innerHTML = '';
+      actions.forEach(a => {
+        const li = document.createElement('li');
+        li.textContent = `${a.type} on ${a.date} → +1 ${a.animal}`;
+        list.appendChild(li);
+      });
+    }
+
+    // When form is submitted → send to backend
+    document.getElementById('actionForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const type = document.getElementById('actionType').value;
+      const date = document.getElementById('actionDate').value;
+
+      const res = await fetch('/api/actions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, date })
+      });
+      const data = await res.json();
+      renderActions(data.actions);
+    });
+
+    // Load existing actions when page first opens
+    fetchActions();
+  </script>
+</body>
+</html>
